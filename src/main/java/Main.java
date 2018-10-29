@@ -11,6 +11,7 @@ public class Main extends Application {
 		Parent root = FXMLLoader.load(getClass().getResource("credentials.fxml"));
 		primaryStage.setTitle("Spotify Access Token Generator");
 		primaryStage.setResizable(false);
+		primaryStage.centerOnScreen();
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 	}
