@@ -30,7 +30,7 @@ public final class AuthorizationWindow {
 		});
 	}
 
-	private void launchWindow(SpotifyUser user) {
+	private void launchPreviewWindow(SpotifyUser user) {
 		try {
 			Stage stage = (Stage) authorizationWindow.getScene().getWindow();
 
@@ -44,13 +44,17 @@ public final class AuthorizationWindow {
 			stage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("Unable to launch preview window");
 		}
 	}
 
 	private void exchangeAccessToken(String authorizationCode) {
 		try {
-			Map<SpotifyAuthenticationComponent, String> map = flow.exchangeAuthorizationCode(authorizationCode);
-			launchWindow(flow.generateSpotifyUser(map));
+			launchPreviewWindow(
+				flow.generateSpotifyUser(
+					flow.exchangeAuthorizationCode(authorizationCode)
+				)
+			);
 		} catch (SpotifyAuthenticationException e) {
 			e.printStackTrace();
 			System.out.println("Unable to exchange token");
@@ -59,9 +63,10 @@ public final class AuthorizationWindow {
 
 	private void performAuthorization(String authorizationUrl) {
 		try {
-			Map<SpotifyAuthorizationFlow.ParseComponent, String> authorizationMap = flow.parseAuthorizationUrl(authorizationUrl);
-			String authorizationCode = authorizationMap.get(SpotifyAuthorizationFlow.ParseComponent.Code);
-			exchangeAccessToken(authorizationCode);
+			String authorizationToken = flow
+				.parseAuthorizationUrl(authorizationUrl)
+				.get(SpotifyAuthorizationFlow.ParseComponent.Code);
+			exchangeAccessToken(authorizationToken);
 		} catch (SpotifyAuthenticationException e) {
 			e.printStackTrace();
 			System.out.println("Unable to parse authorization url");

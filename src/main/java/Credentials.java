@@ -41,8 +41,58 @@ public final class Credentials {
 			.filter(n -> n instanceof CheckBox)
 			.map(n -> (CheckBox) n)
 			.collect(Collectors.toList()));
-		reset.setOnMouseClicked(e -> resetDefaults());
+
+		reset.setOnMouseClicked(e -> resetFields());
 		start.setOnMouseClicked(e -> authorizeUser());
+	}
+
+	private void authorizeUser() {
+		String id = clientId.getText().trim();
+		String secret = clientSecret.getText().trim();
+		String url = redirectUrl.getText().trim();
+
+		if (id.isEmpty() || secret.isEmpty() || url.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please fill in the client id, client secret and redirect url");
+			return;
+		}
+
+		launchAuthorizationWindow(
+			new SpotifyAuthorizationFlow(
+				new SpotifyAuthenticationHelper.Builder()
+					.setClientId(id)
+					.setClientSecret(secret)
+					.setRedirectUrl(url)
+					.setShowDialog(true)
+					.setScopes(matchSelectedScopes())
+					.build()
+			)
+		);
+	}
+
+	private void launchAuthorizationWindow(SpotifyAuthorizationFlow flow) {
+		try {
+			Stage stage = (Stage) this.scopes.getScene().getWindow();
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("authorization_window.fxml"));
+			Parent root = loader.load();
+			AuthorizationWindow controller = loader.getController();
+			controller.setFlow(flow);
+
+			stage.setScene(new Scene(root));
+			stage.centerOnScreen();
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Failed to launch authorization window");
+		}
+	}
+
+	private List<SpotifyScope> matchSelectedScopes() {
+		List<String> selectedScopes = getSelectedScopes();
+		return Arrays
+			.stream(SpotifyScope.values())
+			.filter(scope -> selectedScopes.contains(scope.getScopeName()))
+			.collect(Collectors.toList());
 	}
 
 	private void loadInformation() {
@@ -65,58 +115,15 @@ public final class Credentials {
 		}
 	}
 
-	private void authorizeUser() {
-		String id = clientId.getText().trim();
-		String secret = clientSecret.getText().trim();
-		String url = redirectUrl.getText().trim();
-
-		if (id.isEmpty() || secret.isEmpty() || url.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Please fill in the client id, client secret and redirect url");
-			return;
-		}
-
-		List<String> selectedScopes = getSelectedScopes();
-		List<SpotifyScope> scopes = Arrays
-			.stream(SpotifyScope.values())
-			.filter(scope -> selectedScopes.contains(scope.getScopeName()))
-			.collect(Collectors.toList());
-
-		SpotifyAuthenticationHelper helper = new SpotifyAuthenticationHelper.Builder()
-			.setClientId(id)
-			.setClientSecret(secret)
-			.setRedirectUrl(url)
-			.setShowDialog(true)
-			.setScopes(scopes)
-			.build();
-
-		SpotifyAuthorizationFlow flow = new SpotifyAuthorizationFlow(helper);
-
-		try {
-			Stage stage = (Stage) this.scopes.getScene().getWindow();
-
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("authorization_window.fxml"));
-			Parent root = loader.load();
-			AuthorizationWindow controller = loader.getController();
-			controller.setFlow(flow);
-
-			stage.setScene(new Scene(root));
-			stage.centerOnScreen();
-			stage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void resetDefaults() {
+	private void resetFields() {
 		clientId.clear();
 		clientSecret.clear();
 		redirectUrl.clear();
-		checkAllScopes();
+		selectAllScopes();
 	}
 
-	private void checkAllScopes() {
-		scopeOptions
-			.forEach(cb -> cb.setSelected(true));
+	private void selectAllScopes() {
+		scopeOptions.forEach(cb -> cb.setSelected(true));
 	}
 
 	private List<String> getSelectedScopes() {
