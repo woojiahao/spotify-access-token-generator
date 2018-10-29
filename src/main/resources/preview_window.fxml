@@ -2,11 +2,23 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
-<HBox xmlns="http://javafx.com/javafx"
+<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<VBox xmlns="http://javafx.com/javafx"
 	  xmlns:fx="http://javafx.com/fxml"
 	  fx:controller="PreviewWindow"
-	  prefHeight="400.0" prefWidth="600.0">
+	  spacing="10" prefWidth="600.0">
 
-	<Label text="Access Token:" />
-	<Label fx:id="accessToken" />
-</HBox>
+	<padding>
+		<Insets topRightBottomLeft="10"/>
+	</padding>
+
+	<Label fx:id="title" text="Access Token:" style="-fx-font-weight: bold;" />
+	<TextField fx:id="accessToken" maxWidth="Infinity" HBox.hgrow="ALWAYS" editable="false"/>
+	<HBox spacing="10">
+		<Button fx:id="clipboard" text="Copy To Clipboard" />
+		<Button fx:id="exit" text="Exit" />
+	</HBox>
+</VBox>
