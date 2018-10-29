@@ -91,11 +91,14 @@ public final class Credentials {
 
 		SpotifyAuthorizationFlow flow = new SpotifyAuthorizationFlow(helper);
 
-		String authorizationUrl = flow.generateAuthorizationUrl().toString();
-
 		try {
 			Stage stage = (Stage) this.scopes.getScene().getWindow();
-			Parent root = FXMLLoader.load(getClass().getResource("authorization_window.fxml"));
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("authorization_window.fxml"));
+			Parent root = loader.load();
+			AuthorizationWindow controller = loader.getController();
+			controller.setFlow(flow);
+
 			stage.setScene(new Scene(root));
 			stage.centerOnScreen();
 			stage.show();
