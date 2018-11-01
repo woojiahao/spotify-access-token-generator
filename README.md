@@ -8,12 +8,46 @@ access tokens from the API.
 changes to the library, especially if this is done locally.
 
 ## Usage
+1. Download the distributed `.jar` file
+2. Run the file
+   
+   ```bash
+   $ java -jar SpotifyAccessTokenGenerator.jar
+   ```
+3. Fill in your credentials and press "Start" to begin the authorization process
+
+## Compiling
 1. Clone this repository
-2. Add the wrapper library to your class path
-3. Launch `Main.java`
-4. Select the required scopes to cycle and fill in all text fields
-5. Authorize the application
-6. Copy the access tokens to your clipboard
+   
+   ```bash
+   $ git clone https://github.com/woojiahao/spotify-access-token-generator.git
+   $ cd spotify-access-token-generator
+   ```
+2. Create a local copy of the compiled version of the wrapper
+   
+   ```bash
+   $ git clone https://github.com/woojiahao/java-spotify-wrapper.git
+   $ cd java-spotify-wrapper
+   $ mvn clean install
+   $ cd target
+   ```
+3. Then, add the compiled jar to your local maven repository
+   
+   ```bash
+   $ mvn install:install-file -Dfile=JavaSpotifyWrapper-1.0-SNAPSHOT-jar-with-dependencies.jar -DgroupId=me.chill -DartifactId=JavaSpotifyWrapper -Dversion=1.0-SNAPSHOT -Dpackaging=jar
+   ```
+4. Then navigate back into the access token generator repository location and perform:
+   
+   ```bash
+   $ mvn clean package
+   $ cd target
+   ```
+5. Execute the newly created compiled jar inside the target folder
+   
+   ```bash
+   $ java -jar SpotifyAccessTokenGenerator.jar
+   ```
+6. Fill in the fields and begin using
 
 ## Configuration
 If you wish to supply a default set of configurations every time the credentials window shows up, do the following:

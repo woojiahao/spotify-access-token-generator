@@ -16,3 +16,8 @@ buildNumber.properties
 .idea/
 
 config/config.json
+
+# .jar creations
+.classpath
+.project
+.settings/

@@ -1,4 +1,3 @@
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -65,11 +64,11 @@ public class PreviewWindow {
 		}
 		final Timeline timeline = new Timeline(
 			new KeyFrame(Duration.seconds(user.getExpiryDuration() + 1),
-			e -> {
-				JOptionPane.showMessageDialog(null, "Access Token was refreshed");
-				editLabel("Refreshed", 5);
-				accessToken.setText(user.getAccessToken());
-			}));
+				e -> {
+					JOptionPane.showMessageDialog(null, "Access Token was refreshed");
+					editLabel("Refreshed", 5);
+					accessToken.setText(user.getAccessToken());
+				}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 	}

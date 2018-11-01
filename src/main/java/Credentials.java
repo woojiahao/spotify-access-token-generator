@@ -59,10 +59,10 @@ public final class Credentials {
 		launchAuthorizationWindow(
 			new SpotifyAuthorizationFlow(
 				new SpotifyAuthenticationHelper.Builder()
-					.setClientId(id)
-					.setClientSecret(secret)
-					.setRedirectUrl(url)
-					.setShowDialog(true)
+					.clientId(id)
+					.clientSecret(secret)
+					.redirectUrl(url)
+					.showDialog(true)
 					.setScopes(matchSelectedScopes())
 					.build()
 			)
