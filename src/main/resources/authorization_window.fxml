@@ -2,11 +2,10 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.web.WebView?>
-<?import javafx.geometry.Insets?>
 <HBox xmlns="http://javafx.com/javafx"
-	  xmlns:fx="http://javafx.com/fxml"
-	  fx:controller="AuthorizationWindow"
-	  prefHeight="800.0" prefWidth="600.0">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="AuthorizationWindow"
+      prefHeight="800.0" prefWidth="600.0">
 
-	<WebView fx:id="authorizationWindow"/>
+  <WebView fx:id="authorizationWindow"/>
 </HBox>
